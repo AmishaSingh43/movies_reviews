@@ -49,3 +49,10 @@ Screen Shorts
   ![image](https://github.com/AmishaSingh43/movies_reviews/assets/155913828/4360ebad-e90f-4b4d-95bd-366279ef64ea)
 
 
+  ![image](https://github.com/AmishaSingh43/movies_reviews/assets/155913828/65c21d06-347b-4748-87d1-741d234b1ff3)
+
+
+  ![image](https://github.com/AmishaSingh43/movies_reviews/assets/155913828/fe71a4f0-8497-4af7-8f88-77d0eea038cd)
+
+
+
