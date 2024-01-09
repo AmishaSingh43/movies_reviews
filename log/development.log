@@ -1,0 +1,361 @@
+  [1m[35m (158.2ms)[0m  [1m[35mCREATE DATABASE "movies_development" ENCODING = 'unicode'[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE DATABASE "movies_development" ENCODING = 'unicode'[0m
+  [1m[35m (81.9ms)[0m  [1m[35mCREATE DATABASE "movies_test" ENCODING = 'unicode'[0m
+  [1m[35m (7.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (6.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(5110850682661079685)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20230725160533)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.5ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "name" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230725160533"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateArtists (20230725160654)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.3ms)[0m  [1m[35mCREATE TABLE "artists" ("id" bigserial primary key, "name" character varying, "type" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230725160654"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateLocations (20230725160715)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.4ms)[0m  [1m[35mCREATE TABLE "locations" ("id" bigserial primary key, "name" character varying, "country" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230725160715"]]
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateMovies (20230725160828)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.3ms)[0m  [1m[35mCREATE TABLE "movies" ("id" bigserial primary key, "title" character varying, "description" character varying, "year" integer, "director_id" integer NOT NULL, "location_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_0c3facd907"
+FOREIGN KEY ("location_id")
+  REFERENCES "locations" ("id")
+)[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE INDEX "index_movies_on_location_id" ON "movies" ("location_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230725160828"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateReviews (20230725161226)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.0ms)[0m  [1m[35mCREATE TABLE "reviews" ("id" bigserial primary key, "movie_id" bigint NOT NULL, "user_id" bigint NOT NULL, "stars" float, "comments" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_6ad75a4852"
+FOREIGN KEY ("movie_id")
+  REFERENCES "movies" ("id")
+, CONSTRAINT "fk_rails_74a66bd6c5"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_movie_id" ON "reviews" ("movie_id")[0m
+  [1m[35m (2.7ms)[0m  [1m[35mCREATE INDEX "index_reviews_on_user_id" ON "reviews" ("user_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230725161226"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateMovieActors (20230725173752)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.8ms)[0m  [1m[35mCREATE TABLE "movie_actors" ("id" bigserial primary key, "actor_id" integer NOT NULL, "movie_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_a2d0458e32"
+FOREIGN KEY ("movie_id")
+  REFERENCES "movies" ("id")
+)[0m
+  [1m[35m (2.9ms)[0m  [1m[35mCREATE INDEX "index_movie_actors_on_movie_id" ON "movie_actors" ("movie_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230725173752"]]
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.8ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2024-01-09 06:28:32.998207"], ["updated_at", "2024-01-09 06:28:32.998207"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT pg_advisory_unlock(5110850682661079685)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mMovie Load (0.5ms)[0m  [1m[34mSELECT "movies".* FROM "movies" ORDER BY "movies"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mActor Load (0.5ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 ORDER BY "artists"."id" DESC LIMIT $2[0m  [["type", "Actor"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mMovie Exists? (1.0ms)[0m  [1m[34mSELECT 1 AS one FROM "movies" WHERE "movies"."title" = $1 LIMIT $2[0m  [["title", "Star Wars"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mMovie Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "movies" WHERE "movies"."title" = $1 LIMIT $2[0m  [["title", "Star Wars"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mDirector Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "artists" WHERE "artists"."type" = $1 AND "artists"."name" = $2 LIMIT $3[0m  [["type", "Director"], ["name", "George Lucas"], ["LIMIT", 1]]
+  [1m[36mDirector Create (0.8ms)[0m  [1m[32mINSERT INTO "artists" ("name", "type", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "George Lucas"], ["type", "Director"], ["created_at", "2024-01-09 06:41:22.840730"], ["updated_at", "2024-01-09 06:41:22.840730"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActor Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "artists" WHERE "artists"."type" = $1 AND "artists"."name" = $2 LIMIT $3[0m  [["type", "Actor"], ["name", "Denis Lawson"], ["LIMIT", 1]]
+  [1m[36mActor Create (0.3ms)[0m  [1m[32mINSERT INTO "artists" ("name", "type", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Denis Lawson"], ["type", "Actor"], ["created_at", "2024-01-09 06:41:22.852167"], ["updated_at", "2024-01-09 06:41:22.852167"]]
+  [1m[36mTRANSACTION (0.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActor Load (0.3ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND "artists"."id" = $2 LIMIT $3[0m  [["type", "Actor"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mMovieActor Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "movie_actors" WHERE "movie_actors"."movie_id" IS NULL AND "movie_actors"."actor_id" = $1 LIMIT $2[0m  [["actor_id", 2], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mMovieActor Load (0.6ms)[0m  [1m[34mSELECT "movie_actors".* FROM "movie_actors" ORDER BY "movie_actors"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mDirector Load (0.7ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 ORDER BY "artists"."id" DESC LIMIT $2[0m  [["type", "Director"], ["LIMIT", 1]]
+  [1m[36mActor Load (0.7ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 ORDER BY "artists"."id" DESC LIMIT $2[0m  [["type", "Actor"], ["LIMIT", 1]]
+  [1m[36mMovie Load (0.6ms)[0m  [1m[34mSELECT "movies".* FROM "movies" ORDER BY "movies"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mActor Load (0.5ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 ORDER BY "artists"."id" DESC LIMIT $2[0m  [["type", "Actor"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActor Destroy (0.5ms)[0m  [1m[31mDELETE FROM "artists" WHERE "artists"."id" = $1[0m  [["id", 2]]
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mDirector Load (0.6ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 ORDER BY "artists"."id" DESC LIMIT $2[0m  [["type", "Director"], ["LIMIT", 1]]
+  [1m[36mDirector Load (0.6ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 ORDER BY "artists"."id" DESC LIMIT $2[0m  [["type", "Director"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mDirector Destroy (0.5ms)[0m  [1m[31mDELETE FROM "artists" WHERE "artists"."id" = $1[0m  [["id", 1]]
+  [1m[36mTRANSACTION (2.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mDirector Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "artists" WHERE "artists"."type" = $1 AND "artists"."name" = $2 LIMIT $3[0m  [["type", "Director"], ["name", "George Lucas"], ["LIMIT", 1]]
+  [1m[36mDirector Create (0.6ms)[0m  [1m[32mINSERT INTO "artists" ("name", "type", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "George Lucas"], ["type", "Director"], ["created_at", "2024-01-09 06:45:14.685298"], ["updated_at", "2024-01-09 06:45:14.685298"]]
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mLocation Create (0.9ms)[0m  [1m[32mINSERT INTO "locations" ("name", "country", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Death Valley"], ["country", "California"], ["created_at", "2024-01-09 06:45:14.722274"], ["updated_at", "2024-01-09 06:45:14.722274"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mMovie Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "movies" WHERE "movies"."title" = $1 LIMIT $2[0m  [["title", "Star Wars"], ["LIMIT", 1]]
+  [1m[36mMovie Create (1.0ms)[0m  [1m[32mINSERT INTO "movies" ("title", "description", "year", "director_id", "location_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id"[0m  [["title", "Star Wars"], ["description", "Lord of the Rings"], ["year", nil], ["director_id", 3], ["location_id", 1], ["created_at", "2024-01-09 06:45:14.761367"], ["updated_at", "2024-01-09 06:45:14.761367"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActor Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "artists" WHERE "artists"."type" = $1 AND "artists"."name" = $2 LIMIT $3[0m  [["type", "Actor"], ["name", "Denis Lawson"], ["LIMIT", 1]]
+  [1m[36mActor Create (0.4ms)[0m  [1m[32mINSERT INTO "artists" ("name", "type", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Denis Lawson"], ["type", "Actor"], ["created_at", "2024-01-09 06:45:14.774452"], ["updated_at", "2024-01-09 06:45:14.774452"]]
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mMovie Load (0.3ms)[0m  [1m[34mSELECT "movies".* FROM "movies" WHERE "movies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mActor Load (0.3ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND "artists"."id" = $2 LIMIT $3[0m  [["type", "Actor"], ["id", 4], ["LIMIT", 1]]
+  [1m[36mMovieActor Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "movie_actors" WHERE "movie_actors"."movie_id" = $1 AND "movie_actors"."actor_id" = $2 LIMIT $3[0m  [["movie_id", 1], ["actor_id", 4], ["LIMIT", 1]]
+  [1m[36mMovieActor Create (0.8ms)[0m  [1m[32mINSERT INTO "movie_actors" ("actor_id", "movie_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["actor_id", 4], ["movie_id", 1], ["created_at", "2024-01-09 06:45:14.808763"], ["updated_at", "2024-01-09 06:45:14.808763"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mMovie Load (0.7ms)[0m  [1m[34mSELECT "movies".* FROM "movies" ORDER BY "movies"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mDirector Load (0.5ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 ORDER BY "artists"."id" DESC LIMIT $2[0m  [["type", "Director"], ["LIMIT", 1]]
+Started GET "/" for ::1 at 2024-01-09 10:47:44 +0400
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/amisha/.rvm/gems/ruby-2.7.4/gems/railties-7.0.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/amisha/.rvm/gems/ruby-2.7.4/gems/railties-7.0.6/lib/rails/templates/rails/welcome/index.html.erb (Duration: 2.7ms | Allocations: 766)
+Completed 200 OK in 55ms (Views: 8.5ms | ActiveRecord: 0.0ms | Allocations: 9175)
+
+
+Started GET "/" for ::1 at 2024-01-09 10:51:01 +0400
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/amisha/.rvm/gems/ruby-2.7.4/gems/railties-7.0.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/amisha/.rvm/gems/ruby-2.7.4/gems/railties-7.0.6/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.3ms | Allocations: 449)
+Completed 200 OK in 4ms (Views: 2.8ms | ActiveRecord: 0.0ms | Allocations: 1246)
+
+
+Started GET "/" for ::1 at 2024-01-09 10:51:52 +0400
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/amisha/.rvm/gems/ruby-2.7.4/gems/railties-7.0.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/amisha/.rvm/gems/ruby-2.7.4/gems/railties-7.0.6/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.1ms | Allocations: 15)
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.0ms | Allocations: 212)
+
+
+Started GET "/" for ::1 at 2024-01-09 10:51:55 +0400
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/amisha/.rvm/gems/ruby-2.7.4/gems/railties-7.0.6/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/amisha/.rvm/gems/ruby-2.7.4/gems/railties-7.0.6/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.1ms | Allocations: 16)
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.0ms | Allocations: 216)
+
+
+Started GET "/movies" for ::1 at 2024-01-09 10:52:50 +0400
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering movies/index.html.erb within layouts/application
+  Rendered movies/_import.html.erb (Duration: 4.9ms | Allocations: 731)
+  Rendered movies/_import.html.erb (Duration: 0.5ms | Allocations: 299)
+  [1m[36mMovie Load (0.8ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.erb:28
+  [1m[36mDirector Load (0.6ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND "artists"."id" = $2[0m  [["type", "Director"], ["id", 3]]
+  ↳ app/views/movies/index.html.erb:28
+  Rendered collection of movies/_movie.html.erb [1 times] (Duration: 2.4ms | Allocations: 549)
+  Rendered movies/index.html.erb within layouts/application (Duration: 81.1ms | Allocations: 43963)
+  Rendered layouts/_nav_bar.html.erb (Duration: 0.7ms | Allocations: 335)
+  Rendered layout layouts/application.html.erb (Duration: 2084.4ms | Allocations: 201523)
+Completed 200 OK in 2100ms (Views: 2075.0ms | ActiveRecord: 11.1ms | Allocations: 208871)
+
+
+Started GET "/movies" for ::1 at 2024-01-09 10:56:12 +0400
+  
+NoMethodError (undefined method `root_path' for ApplicationController:Class):
+  
+app/controllers/application_controller.rb:2:in `<class:ApplicationController>'
+app/controllers/application_controller.rb:1:in `<main>'
+app/controllers/movies_controller.rb:1:in `<main>'
+Started GET "/movies" for ::1 at 2024-01-09 11:07:26 +0400
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering movies/index.html.erb within layouts/application
+  Rendered movies/_import.html.erb (Duration: 2.2ms | Allocations: 523)
+  Rendered movies/_import.html.erb (Duration: 0.5ms | Allocations: 299)
+  [1m[36mMovie Load (0.7ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.erb:28
+  [1m[36mDirector Load (0.4ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND "artists"."id" = $2[0m  [["type", "Director"], ["id", 3]]
+  ↳ app/views/movies/index.html.erb:28
+  Rendered collection of movies/_movie.html.erb [1 times] (Duration: 1.3ms | Allocations: 339)
+  Rendered movies/index.html.erb within layouts/application (Duration: 64.3ms | Allocations: 13668)
+  Rendered layouts/_nav_bar.html.erb (Duration: 0.2ms | Allocations: 122)
+  Rendered layout layouts/application.html.erb (Duration: 91.7ms | Allocations: 37549)
+Completed 200 OK in 113ms (Views: 93.9ms | ActiveRecord: 24.2ms | Allocations: 43139)
+
+
+Started GET "/" for ::1 at 2024-01-09 11:07:32 +0400
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering movies/index.html.erb within layouts/application
+  Rendered movies/_import.html.erb (Duration: 1.0ms | Allocations: 520)
+  Rendered movies/_import.html.erb (Duration: 0.5ms | Allocations: 299)
+  [1m[36mMovie Load (0.5ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.erb:28
+  [1m[36mDirector Load (0.5ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND "artists"."id" = $2[0m  [["type", "Director"], ["id", 3]]
+  ↳ app/views/movies/index.html.erb:28
+  Rendered collection of movies/_movie.html.erb [1 times] (Duration: 1.0ms | Allocations: 325)
+  Rendered movies/index.html.erb within layouts/application (Duration: 8.7ms | Allocations: 2807)
+  Rendered layouts/_nav_bar.html.erb (Duration: 0.3ms | Allocations: 119)
+  Rendered layout layouts/application.html.erb (Duration: 19.6ms | Allocations: 8578)
+Completed 200 OK in 21ms (Views: 19.2ms | ActiveRecord: 1.0ms | Allocations: 8840)
+
+
+Started GET "/" for ::1 at 2024-01-09 11:07:35 +0400
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering movies/index.html.erb within layouts/application
+  Rendered movies/_import.html.erb (Duration: 1.1ms | Allocations: 532)
+  Rendered movies/_import.html.erb (Duration: 0.5ms | Allocations: 299)
+  [1m[36mMovie Load (0.5ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.erb:28
+  [1m[36mDirector Load (0.6ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND "artists"."id" = $2[0m  [["type", "Director"], ["id", 3]]
+  ↳ app/views/movies/index.html.erb:28
+  Rendered collection of movies/_movie.html.erb [1 times] (Duration: 0.9ms | Allocations: 325)
+  Rendered movies/index.html.erb within layouts/application (Duration: 8.8ms | Allocations: 2830)
+  Rendered layouts/_nav_bar.html.erb (Duration: 0.3ms | Allocations: 119)
+  Rendered layout layouts/application.html.erb (Duration: 19.6ms | Allocations: 8600)
+Completed 200 OK in 21ms (Views: 19.2ms | ActiveRecord: 1.0ms | Allocations: 8867)
+
+
+Started GET "/movies" for ::1 at 2024-01-09 11:07:48 +0400
+Processing by MoviesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering movies/index.html.erb within layouts/application
+  Rendered movies/_import.html.erb (Duration: 1.1ms | Allocations: 524)
+  Rendered movies/_import.html.erb (Duration: 0.5ms | Allocations: 299)
+  [1m[36mMovie Load (0.4ms)[0m  [1m[34mSELECT "movies".* FROM "movies"[0m
+  ↳ app/views/movies/index.html.erb:28
+  [1m[36mDirector Load (0.4ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND "artists"."id" = $2[0m  [["type", "Director"], ["id", 3]]
+  ↳ app/views/movies/index.html.erb:28
+  Rendered collection of movies/_movie.html.erb [1 times] (Duration: 0.9ms | Allocations: 325)
+  Rendered movies/index.html.erb within layouts/application (Duration: 7.9ms | Allocations: 2820)
+  Rendered layouts/_nav_bar.html.erb (Duration: 0.3ms | Allocations: 119)
+  Rendered layout layouts/application.html.erb (Duration: 18.1ms | Allocations: 8590)
+Completed 200 OK in 19ms (Views: 18.1ms | ActiveRecord: 0.7ms | Allocations: 8855)
+
+
+Started GET "/actors" for ::1 at 2024-01-09 11:07:50 +0400
+Processing by ActorsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering actors/index.html.erb within layouts/application
+  Rendered actors/_filters.html.erb (Duration: 1.1ms | Allocations: 414)
+  [1m[36mActor Load (0.4ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1[0m  [["type", "Actor"]]
+  ↳ app/views/actors/index.html.erb:10
+  Rendered collection of actors/_actor.html.erb [1 times] (Duration: 0.9ms | Allocations: 155)
+  Rendered actors/index.html.erb within layouts/application (Duration: 8.4ms | Allocations: 2654)
+  Rendered layouts/_nav_bar.html.erb (Duration: 0.4ms | Allocations: 126)
+  Rendered layout layouts/application.html.erb (Duration: 19.3ms | Allocations: 8660)
+Completed 200 OK in 24ms (Views: 20.5ms | ActiveRecord: 0.4ms | Allocations: 9986)
+
+
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActor Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "artists" WHERE "artists"."type" = $1 AND "artists"."name" = $2 LIMIT $3[0m  [["type", "Actor"], ["name", "Tom Cruise"], ["LIMIT", 1]]
+  [1m[36mActor Create (0.6ms)[0m  [1m[32mINSERT INTO "artists" ("name", "type", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "Tom Cruise"], ["type", "Actor"], ["created_at", "2024-01-09 07:09:06.131138"], ["updated_at", "2024-01-09 07:09:06.131138"]]
+  [1m[36mTRANSACTION (2.6ms)[0m  [1m[35mCOMMIT[0m
+Started GET "/actors" for ::1 at 2024-01-09 11:09:12 +0400
+Processing by ActorsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering actors/index.html.erb within layouts/application
+  Rendered actors/_filters.html.erb (Duration: 0.5ms | Allocations: 222)
+  [1m[36mActor Load (0.4ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1[0m  [["type", "Actor"]]
+  ↳ app/views/actors/index.html.erb:10
+  Rendered collection of actors/_actor.html.erb [2 times] (Duration: 0.1ms | Allocations: 27)
+  Rendered actors/index.html.erb within layouts/application (Duration: 3.8ms | Allocations: 959)
+  Rendered layouts/_nav_bar.html.erb (Duration: 0.3ms | Allocations: 119)
+  Rendered layout layouts/application.html.erb (Duration: 16.9ms | Allocations: 6946)
+Completed 200 OK in 19ms (Views: 17.3ms | ActiveRecord: 0.4ms | Allocations: 7241)
+
+
+Started GET "/actors?search=deni&commit=Search" for ::1 at 2024-01-09 11:09:20 +0400
+Processing by ActorsController#index as HTML
+  Parameters: {"search"=>"deni", "commit"=>"Search"}
+  Rendering layout layouts/application.html.erb
+  Rendering actors/index.html.erb within layouts/application
+  Rendered actors/_filters.html.erb (Duration: 0.4ms | Allocations: 228)
+  [1m[36mActor Load (0.8ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND (name ILIKE '%deni%')[0m  [["type", "Actor"]]
+  ↳ app/views/actors/index.html.erb:10
+  Rendered collection of actors/_actor.html.erb [1 times] (Duration: 0.1ms | Allocations: 20)
+  Rendered actors/index.html.erb within layouts/application (Duration: 3.6ms | Allocations: 949)
+  Rendered layouts/_nav_bar.html.erb (Duration: 0.3ms | Allocations: 119)
+  Rendered layout layouts/application.html.erb (Duration: 14.3ms | Allocations: 6933)
+Completed 200 OK in 16ms (Views: 14.1ms | ActiveRecord: 0.8ms | Allocations: 7258)
+
+
+Started GET "/actors?search=deni&commit=Search" for ::1 at 2024-01-09 11:09:22 +0400
+Processing by ActorsController#index as HTML
+  Parameters: {"search"=>"deni", "commit"=>"Search"}
+  Rendering layout layouts/application.html.erb
+  Rendering actors/index.html.erb within layouts/application
+  Rendered actors/_filters.html.erb (Duration: 0.4ms | Allocations: 228)
+  [1m[36mActor Load (0.6ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND (name ILIKE '%deni%')[0m  [["type", "Actor"]]
+  ↳ app/views/actors/index.html.erb:10
+  Rendered collection of actors/_actor.html.erb [1 times] (Duration: 0.1ms | Allocations: 20)
+  Rendered actors/index.html.erb within layouts/application (Duration: 3.2ms | Allocations: 945)
+  Rendered layouts/_nav_bar.html.erb (Duration: 0.3ms | Allocations: 119)
+  Rendered layout layouts/application.html.erb (Duration: 16.1ms | Allocations: 6932)
+Completed 200 OK in 18ms (Views: 16.2ms | ActiveRecord: 0.6ms | Allocations: 7251)
+
+
+Started GET "/actors?search=deni&commit=Search" for ::1 at 2024-01-09 11:10:19 +0400
+Processing by ActorsController#index as HTML
+  Parameters: {"search"=>"deni", "commit"=>"Search"}
+  Rendering layout layouts/application.html.erb
+  Rendering actors/index.html.erb within layouts/application
+  Rendered actors/_filters.html.erb (Duration: 1.4ms | Allocations: 497)
+  [1m[36mActor Load (0.6ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND (name ILIKE '%deni%')[0m  [["type", "Actor"]]
+  ↳ app/views/actors/index.html.erb:10
+  Rendered collection of actors/_actor.html.erb [1 times] (Duration: 0.8ms | Allocations: 151)
+  Rendered actors/index.html.erb within layouts/application (Duration: 6.1ms | Allocations: 1623)
+  Rendered layouts/_nav_bar.html.erb (Duration: 1.2ms | Allocations: 322)
+  Rendered layout layouts/application.html.erb (Duration: 19.7ms | Allocations: 8151)
+Completed 200 OK in 25ms (Views: 21.4ms | ActiveRecord: 0.6ms | Allocations: 9182)
+
+
+Started GET "/actors?search=deni&commit=Search" for ::1 at 2024-01-09 11:10:28 +0400
+Processing by ActorsController#index as HTML
+  Parameters: {"search"=>"deni", "commit"=>"Search"}
+  Rendering layout layouts/application.html.erb
+  Rendering actors/index.html.erb within layouts/application
+  Rendered actors/_filters.html.erb (Duration: 1.1ms | Allocations: 420)
+  [1m[36mActor Load (0.6ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND (name ILIKE '%deni%')[0m  [["type", "Actor"]]
+  ↳ app/views/actors/index.html.erb:10
+  Rendered collection of actors/_actor.html.erb [1 times] (Duration: 0.8ms | Allocations: 151)
+  Rendered actors/index.html.erb within layouts/application (Duration: 6.5ms | Allocations: 1546)
+  Rendered layouts/_nav_bar.html.erb (Duration: 1.4ms | Allocations: 322)
+  Rendered layout layouts/application.html.erb (Duration: 22.1ms | Allocations: 8056)
+Completed 200 OK in 26ms (Views: 23.6ms | ActiveRecord: 0.6ms | Allocations: 9083)
+
+
+Started GET "/actors?search=deni&commit=Search" for ::1 at 2024-01-09 11:17:20 +0400
+Processing by ActorsController#index as HTML
+  Parameters: {"search"=>"deni", "commit"=>"Search"}
+  Rendering layout layouts/application.html.erb
+  Rendering actors/index.html.erb within layouts/application
+  Rendered actors/_filters.html.erb (Duration: 1.3ms | Allocations: 419)
+  [1m[36mActor Load (1.6ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND (name ILIKE '%deni%')[0m  [["type", "Actor"]]
+  ↳ app/views/actors/index.html.erb:10
+  Rendered collection of actors/_actor.html.erb [1 times] (Duration: 1.0ms | Allocations: 151)
+  Rendered actors/index.html.erb within layouts/application (Duration: 8.3ms | Allocations: 1620)
+  Rendered layouts/_nav_bar.html.erb (Duration: 1.0ms | Allocations: 322)
+  Rendered layout layouts/application.html.erb (Duration: 13.9ms | Allocations: 4177)
+Completed 200 OK in 34ms (Views: 14.5ms | ActiveRecord: 9.7ms | Allocations: 8026)
+
+
+Started GET "/actors?search=deni&commit=Search" for ::1 at 2024-01-09 11:18:11 +0400
+Processing by ActorsController#index as HTML
+  Parameters: {"search"=>"deni", "commit"=>"Search"}
+  Rendering layout layouts/application.html.erb
+  Rendering actors/index.html.erb within layouts/application
+  Rendered actors/_filters.html.erb (Duration: 1.3ms | Allocations: 419)
+  [1m[36mActor Load (0.8ms)[0m  [1m[34mSELECT "artists".* FROM "artists" WHERE "artists"."type" = $1 AND (name ILIKE '%deni%')[0m  [["type", "Actor"]]
+  ↳ app/views/actors/index.html.erb:10
+  Rendered collection of actors/_actor.html.erb [1 times] (Duration: 0.7ms | Allocations: 151)
+  Rendered actors/index.html.erb within layouts/application (Duration: 6.5ms | Allocations: 1545)
+  Rendered layouts/_nav_bar.html.erb (Duration: 1.2ms | Allocations: 322)
+  Rendered layout layouts/application.html.erb (Duration: 24.0ms | Allocations: 8064)
+Completed 200 OK in 28ms (Views: 25.2ms | ActiveRecord: 0.8ms | Allocations: 9092)
+
+
