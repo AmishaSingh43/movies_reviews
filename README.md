@@ -42,3 +42,10 @@ Jobs
     - Used to import movies CSV file and insert data
 * ImportReviewsJob
     - Used to import reviews CSV file and insert data
+
+
+Screen Shorts 
+
+  ![image](https://github.com/AmishaSingh43/movies_reviews/assets/155913828/4360ebad-e90f-4b4d-95bd-366279ef64ea)
+
+
